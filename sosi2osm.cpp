@@ -63,7 +63,38 @@ void getCoords(long int* size, double** lat, double** lon) {
 }
 
 long nodeId = -1;
-long createNode(double lat, double lon) {
+long createNode(double lat, double lon, short kp) {
+	if (kp == 0) {
+    	printf("<node id=\"%ld\" lat=\"%.7f\" lon=\"%.7f\" visible=\"true\"/>\n", nodeId, lat, lon);
+	    return nodeId--;
+    }
+    
+    static int sizeM = 0;
+    static int lenM = 0;
+    static double* latM = NULL;
+    static double* lonM = NULL;
+    static short* kpM = NULL;
+    static long* idM = NULL;
+    
+    for (int i = 0; i < lenM; i++) {
+    	if (lat == latM[i] && lon == lonM[i] && kp == kpM[i]) {
+    		return idM[i];
+    	}
+    }
+    
+    if (lenM >= sizeM) {
+    	sizeM = max(1024, sizeM*2);
+    	latM = (double*)realloc(latM, sizeof(double) * sizeM);
+    	lonM = (double*)realloc(lonM, sizeof(double) * sizeM);
+    	kpM = (short*)realloc(kpM, sizeof(short) * sizeM);
+    	idM = (long*)realloc(idM, sizeof(long) * sizeM);
+    }
+    
+    latM[lenM] = lat;
+    lonM[lenM] = lon;
+    kpM[lenM] = kp;
+    idM[lenM] = nodeId;
+    lenM++;
     printf("<node id=\"%ld\" lat=\"%.7f\" lon=\"%.7f\" visible=\"true\"/>\n", nodeId, lat, lon);
     return nodeId--;
 }
@@ -115,7 +146,7 @@ void outputWay() {
     long* nd = (long*)malloc(sizeof(long) * size);
     
     for (int i = 0; i < size; i++) {
-        nd[i] = createNode(lat[i], lon[i]);
+        nd[i] = createNode(lat[i], lon[i], LC_GetKp(i+1));
     }
     
     printf("<way id=\"%ld\" visible=\"true\">", -getSOSIId());
