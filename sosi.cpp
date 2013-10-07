@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "sosi2osm.h"
 
 LC_BASEADM* base = NULL;
@@ -102,7 +104,7 @@ const char* getCoordinateSystem() {
     }
 }
 
-void getSOSICoord(int i, double* x, double* y) {
+void getSOSICoord(long i, double* x, double* y) {
     LC_GetTK(i+1, x, y);
 }
 
@@ -112,5 +114,25 @@ long getSOSICoordsSize() {
     unsigned short info;
     LC_GetGrPara(&lines, &coordinates, &info);
     return coordinates;
+}
+
+char* getSOSILine(long i) {
+    if (i == 0) return NULL;
+    char* r = LC_GetGi(i+1);
+    if (r[0] == ':' || r[0] == '(' || r[0] == '!')
+        return NULL;
+    while (r[0] == '.') r++;
+    if (strncmp(r, "REF", 3) == 0)
+        return NULL;
+    
+    return r;
+}
+
+long getSOSILinesLength() {
+    short lines;
+    long coordinates;
+    unsigned short info;
+    LC_GetGrPara(&lines, &coordinates, &info);
+    return lines;
 }
 

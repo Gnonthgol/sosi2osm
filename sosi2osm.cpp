@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <proj_api.h>
 
 #include "sosi2osm.h"
@@ -42,7 +43,23 @@ long createNode(double lat, double lon) {
 }
 
 void outputTags() {
-    
+    long lines = getSOSILinesLength();
+    for (int i = 0; i < lines; i++) {
+        char* key = getSOSILine(i);
+        if (key != NULL) {
+            char* value = strchr(key, ' ');
+            if (value != NULL) {
+                value[0] = '\0';
+                value++;
+                while (value[0] == '"') value++;
+                char* last = value + strlen(value);
+                while (last[-1] == '"') last--;
+                *last = '\0';
+                
+                printf("<tag k=\"%s\" v=\"%s\"/>\n", key, value);
+            }
+        }
+    }
 }
 
 void outputNode() {
@@ -111,6 +128,7 @@ int main(int argc, char** args) {
             break;
         case L_FLATE:
             outputRelation();
+            break;
         case L_PUNKT:
         case L_SYMBOL:
         case L_TEKST:
