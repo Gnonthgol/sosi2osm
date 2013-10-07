@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <string.h>
+
+#include <iconv.h>
 #include <proj_api.h>
 
 #include "sosi2osm.h"
@@ -9,11 +11,35 @@ void usage() {
 }
 
 projPJ origProj, osmProj;
+iconv_t charDescriptor;
 void handleHead() {
     if (!(origProj = pj_init_plus(getCoordinateSystem())) )
         exit(1);
     if (!(osmProj = pj_init_plus("+proj=latlong +datum=WGS84")) )
         exit(1);
+    
+    long lines = getSOSILinesLength();
+    for (int i = 0; i < lines; i++) {
+        char* line = getSOSILine(i);
+        if (line != NULL && strncmp(line, "TEGNSETT ", 9) == 0) {
+            charDescriptor = iconv_open("UTF-8", line+9);
+        }
+    }
+}
+
+char* toUTF8(char* in, char* outBuf, size_t outlen) {
+    size_t inlen = strlen(in)+1;
+    char* out = outBuf;
+    
+    iconv(charDescriptor, NULL, NULL, NULL, NULL);
+    int r = iconv(charDescriptor, &in, &inlen, &out, &outlen);
+    
+    if (r == -1) {
+        fprintf(stderr, "Unknown character '%c' (0x%hhx)\n", in[0], in[0]);
+        exit(1);
+    }
+    
+    return outBuf;
 }
 
 void getCoords(long int* size, double** lat, double** lon) {
@@ -56,7 +82,12 @@ void outputTags() {
                 while (last[-1] == '"') last--;
                 *last = '\0';
                 
-                printf("<tag k=\"%s\" v=\"%s\"/>\n", key, value);
+                char keyBuf[256];
+                char valueBuf[256];
+                
+                printf("<tag k=\"%s\" v=\"%s\"/>\n",
+                    toUTF8(key, keyBuf, 256),
+                    toUTF8(value, valueBuf, 256));
             }
         }
     }
