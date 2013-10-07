@@ -132,7 +132,25 @@ void outputWay() {
 }
 
 void outputRelation() {
-
+    printf("<relation id=\"%d\" visible=\"true\">", -getSOSIId());
+    printf("<tag k=\"type\" v=\"multipolygon\"/>");
+    outputTags();
+    
+    char* role = "outer";
+    long refsLen = getSOSIRefsSize();
+    long* refs = getSOSIRefs();
+    for (int i = 0; i < refsLen; i++) {
+        if (refs[i] == START_OY)
+            role = "inner";
+        else if (refs[i] == SLUTT_OY)
+            role = "outer";
+        else
+            printf("<member ref=\"%d\" role=\"%s\" type=\"way\"/>", -abs(refs[i]), role);
+    }
+    
+    free(refs);
+    
+    printf("</relation>\n");
 }
 
 int main(int argc, char** args) {

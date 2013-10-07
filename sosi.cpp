@@ -136,3 +136,17 @@ long getSOSILinesLength() {
     return lines;
 }
 
+long* getSOSIRefs() {
+    long size = LC_InqAntRef();
+    long* ret = (long*)malloc(sizeof(long) * size);
+    short line = 1, pos = 1;
+    
+    LC_GetRef(ret, size, &line, &pos);
+    
+    return ret;
+}
+
+long getSOSIRefsSize() {
+    return LC_InqAntRef();
+}
+

@@ -12,4 +12,6 @@ void getSOSICoord(long i, double* x, double* y);
 long getSOSICoordsSize();
 char* getSOSILine(long i);
 long getSOSILinesLength();
+long* getSOSIRefs();
+long getSOSIRefsSize();
 
