@@ -1,153 +1,27 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <iconv.h>
-#include <proj_api.h>
-
 #include "sosi2osm.h"
 
 void usage() {
     printf("Usage: sosi2osm [sosi file]\n");
 }
 
-projPJ origProj, osmProj;
-iconv_t charDescriptor;
 void handleHead() {
-    if (!(origProj = pj_init_plus(getCoordinateSystem())) )
-        exit(1);
-    if (!(osmProj = pj_init_plus("+proj=latlong +datum=WGS84")) )
-        exit(1);
+    setProjection(getCoordinateSystem());
     
     long lines = getSOSILinesLength();
     for (int i = 0; i < lines; i++) {
         char* line = getSOSILine(i);
         if (line != NULL && strncmp(line, "TEGNSETT ", 9) == 0) {
-            charDescriptor = iconv_open("UTF-8", line+9);
+            setEncoding(line+9);
         }
     }
-}
-
-char* toUTF8(char* in, char* outBuf, size_t outlen) {
-    size_t inlen = strlen(in)+1;
-    char* out = outBuf;
-    
-    iconv(charDescriptor, NULL, NULL, NULL, NULL);
-    int r = iconv(charDescriptor, &in, &inlen, &out, &outlen);
-    
-    if (r == -1) {
-        fprintf(stderr, "Unknown character '%c' (0x%hhx)\n", in[0], in[0]);
-        exit(1);
-    }
-    
-    return outBuf;
-}
-
-void getCoords(long int* size, double** lat, double** lon) {
-    *size = getSOSICoordsSize();
-    double* x = (double*)malloc(sizeof(double) * *size);
-    double* y = (double*)malloc(sizeof(double) * *size);
-    *lat = y;
-    *lon = x;
-    
-    int i;
-    for (i = 0; i < *size; i++) {
-        getSOSICoord(i, x+i, y+i);
-    }
-    
-    pj_transform(origProj, osmProj, *size, 1, x, y, NULL );
-    
-    for (i = 0; i < *size; i++) {
-        x[i] = x[i]*RAD_TO_DEG;
-        y[i] = y[i]*RAD_TO_DEG;
-    }
-}
-
-long nodeId = -1;
-long createNode(double lat, double lon, short kp) {
-	if (kp == 0) {
-    	printf("<node id=\"%ld\" lat=\"%.7f\" lon=\"%.7f\" visible=\"true\"/>\n", nodeId, lat, lon);
-	    return nodeId--;
-    }
-    
-    static int sizeM = 0;
-    static int lenM = 0;
-    static double* latM = NULL;
-    static double* lonM = NULL;
-    static short* kpM = NULL;
-    static long* idM = NULL;
-    
-    for (int i = 0; i < lenM; i++) {
-    	if (lat == latM[i] && lon == lonM[i] && kp == kpM[i]) {
-    		return idM[i];
-    	}
-    }
-    
-    if (lenM >= sizeM) {
-    	sizeM = max(1024, sizeM*2);
-    	latM = (double*)realloc(latM, sizeof(double) * sizeM);
-    	lonM = (double*)realloc(lonM, sizeof(double) * sizeM);
-    	kpM = (short*)realloc(kpM, sizeof(short) * sizeM);
-    	idM = (long*)realloc(idM, sizeof(long) * sizeM);
-    }
-    
-    latM[lenM] = lat;
-    lonM[lenM] = lon;
-    kpM[lenM] = kp;
-    idM[lenM] = nodeId;
-    lenM++;
-    printf("<node id=\"%ld\" lat=\"%.7f\" lon=\"%.7f\" visible=\"true\"/>\n", nodeId, lat, lon);
-    return nodeId--;
-}
-
-void outputTags() {
-    long lines = getSOSILinesLength();
-    for (int i = 0; i < lines; i++) {
-        char* key = getSOSILine(i);
-        if (key != NULL) {
-            char* value = strchr(key, ' ');
-            if (value != NULL) {
-                value[0] = '\0';
-                value++;
-                while (value[0] == '"') value++;
-                char* last = value + strlen(value);
-                while (last[-1] == '"') last--;
-                *last = '\0';
-                
-                char keyBuf[256];
-                char valueBuf[256];
-                
-                printf("<tag k=\"%s\" v=\"%s\"/>\n",
-                    toUTF8(key, keyBuf, 256),
-                    toUTF8(value, valueBuf, 256));
-            }
-        }
-    }
-}
-
-void outputNode() {
-    long int size;
-    double *lat, *lon;
-    getCoords(&size, &lat, &lon);
-    
-    for (int i = 0; i < size; i++) {
-        printf("<node id=\"%ld\" lat=\"%.7f\" lon=\"%.7f\" visible=\"true\">\n", nodeId--, lat[i], lon[i]);
-        outputTags();
-        printf("</node>\n");
-    }
-    
-    free(lat);
-    free(lon);
 }
 
 void outputWay() {
-    long int size;
-    double *lat, *lon;
-    getCoords(&size, &lat, &lon);
-    long* nd = (long*)malloc(sizeof(long) * size);
-    
-    for (int i = 0; i < size; i++) {
-        nd[i] = createNode(lat[i], lon[i], LC_GetKp(i+1));
-    }
+    long int* nd;
+    long int size = createNodes(&nd);
     
     printf("<way id=\"%ld\" visible=\"true\">", -getSOSIId());
     outputTags();
@@ -158,8 +32,7 @@ void outputWay() {
     
     printf("</way>\n");
     
-    free(lat);
-    free(lon);
+    free(nd);
 }
 
 void outputRelation() {

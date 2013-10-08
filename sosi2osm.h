@@ -15,3 +15,14 @@ long getSOSILinesLength();
 long* getSOSIRefs();
 long getSOSIRefsSize();
 
+// Tag
+
+void setEncoding(char* encoding);
+void outputTags();
+
+// Node
+
+void setProjection(const char* proj);
+long int createNodes(long int** ids);
+void outputNode();
+
