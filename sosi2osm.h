@@ -18,6 +18,7 @@ long getSOSIRefsSize();
 // Tag
 
 void setEncoding(char* encoding);
+void loadLua(char* filename);
 void outputTags();
 
 // Node

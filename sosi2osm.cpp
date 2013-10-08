@@ -4,7 +4,7 @@
 #include "sosi2osm.h"
 
 void usage() {
-    printf("Usage: sosi2osm [sosi file]\n");
+    printf("Usage: sosi2osm [sosi file] [lua file]\n");
 }
 
 void handleHead() {
@@ -58,12 +58,14 @@ void outputRelation() {
 }
 
 int main(int argc, char** args) {
-    if (argc != 2) {
+    if (argc != 3) {
         usage();
         return 1;
     }
     
     char* input_filename = args[1];
+    
+    loadLua(args[2]);
     
     if (!openSOSI(input_filename)) {
         closeSOSI();
