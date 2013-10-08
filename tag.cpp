@@ -9,6 +9,9 @@ void setEncoding(char* encoding) {
 }
 
 char* toUTF8(char* in, char* outBuf, size_t outlen) {
+    if (in == NULL) {
+        return NULL;
+    }
     size_t inlen = strlen(in)+1;
     char* out = outBuf;
     
@@ -26,7 +29,8 @@ char* toUTF8(char* in, char* outBuf, size_t outlen) {
 void outputTags() {
     long lines = getSOSILinesLength();
     for (int i = 1; i < lines; i++) {
-        char* key = getSOSILine(i);
+        char buffer[256];
+        char* key = toUTF8(getSOSILine(i), buffer, 256);
         if (key != NULL) {
             while (key[0] == '.') key++;
             
@@ -39,12 +43,7 @@ void outputTags() {
                 while (last[-1] == '"') last--;
                 *last = '\0';
                 
-                char keyBuf[256];
-                char valueBuf[256];
-                
-                printf("<tag k=\"%s\" v=\"%s\"/>\n",
-                    toUTF8(key, keyBuf, 256),
-                    toUTF8(value, valueBuf, 256));
+                printf("<tag k=\"%s\" v=\"%s\"/>", key, value);
             }
         }
     }
