@@ -13,8 +13,8 @@ void handleHead() {
     long lines = getSOSILinesLength();
     for (int i = 0; i < lines; i++) {
         char* line = getSOSILine(i);
-        if (line != NULL && strncmp(line, "TEGNSETT ", 9) == 0) {
-            setEncoding(line+9);
+        if (line != NULL && strncmp(line, "..TEGNSETT ", 11) == 0) {
+            setEncoding(line+11);
         }
     }
 }

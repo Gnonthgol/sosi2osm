@@ -5,7 +5,7 @@
 
 iconv_t charDescriptor;
 void setEncoding(char* encoding) {
-	charDescriptor = iconv_open("UTF-8", encoding);
+    charDescriptor = iconv_open("UTF-8", encoding);
 }
 
 char* toUTF8(char* in, char* outBuf, size_t outlen) {
@@ -25,9 +25,11 @@ char* toUTF8(char* in, char* outBuf, size_t outlen) {
 
 void outputTags() {
     long lines = getSOSILinesLength();
-    for (int i = 0; i < lines; i++) {
+    for (int i = 1; i < lines; i++) {
         char* key = getSOSILine(i);
         if (key != NULL) {
+            while (key[0] == '.') key++;
+            
             char* value = strchr(key, ' ');
             if (value != NULL) {
                 value[0] = '\0';

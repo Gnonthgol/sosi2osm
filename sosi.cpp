@@ -60,13 +60,13 @@ short getSOSIType() {
 }
 
 long getSOSIId() {
-	return LC_GetSn();
+    return LC_GetSn();
 }
 
 const char* getCoordinateSystem() {
-	unsigned short mask = LC_TR_ALLT;
+    unsigned short mask = LC_TR_ALLT;
     LC_TRANSPAR trans;
-	if (LC_GetTransEx(&mask,&trans) == UT_FALSE) {
+    if (LC_GetTransEx(&mask,&trans) == UT_FALSE) {
         fprintf(stderr, "TRANSPAR section not found - No reference system information available.");
         return "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ";
     }
@@ -117,12 +117,12 @@ long getSOSICoordsSize() {
 }
 
 char* getSOSILine(long i) {
-    if (i == 0) return NULL;
     char* r = LC_GetGi(i+1);
     if (r[0] == ':' || r[0] == '(' || r[0] == '!')
         return NULL;
-    while (r[0] == '.') r++;
-    if (strncmp(r, "REF", 3) == 0)
+    char* tmp = r;
+    while (tmp[0] == '.') tmp++;
+    if (strncmp(tmp, "REF", 3) == 0)
         return NULL;
     
     return r;
