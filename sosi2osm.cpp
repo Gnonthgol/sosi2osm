@@ -37,7 +37,6 @@ void outputWay() {
 
 void outputRelation() {
     printf("<relation id=\"%d\" visible=\"true\">", -getSOSIId());
-    printf("<tag k=\"type\" v=\"multipolygon\"/>");
     outputTags();
     
     char* role = "outer";
