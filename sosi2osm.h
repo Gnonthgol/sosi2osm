@@ -17,6 +17,7 @@ long getSOSIRefsSize();
 
 // Tag
 
+extern char* execname;
 void setEncoding(char* encoding);
 void loadLua(char* filename);
 void outputTags();

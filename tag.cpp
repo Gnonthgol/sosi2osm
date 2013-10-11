@@ -2,6 +2,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <libgen.h>
 #include <iconv.h>
 #include <lua.h>
 #include <lualib.h>
@@ -34,14 +35,23 @@ lua_State *state;
 void loadLua(char* filename) {
     state = luaL_newstate();
     luaL_openlibs(state);
-    int r = luaL_loadfile(state, filename);
+    
+    char library_filename[256];
+    snprintf(library_filename, 256, "%s/lua/sosi2osm.lua", dirname(execname));
+    
+    int r = luaL_loadfile(state, library_filename);
+    if (r) {
+        fprintf(stderr, "Failed to load lua library file %s\n", library_filename);
+        exit(1);
+    }
+    lua_call(state, 0, 0);
+    
+    r = luaL_loadfile(state, filename);
     if (r) {
         fprintf(stderr, "Failed to load lua file %s\n", filename);
         exit(1);
     }
     
-    luaL_loadfile(state, "lua/sosi2osm.lua");
-    lua_call(state, 0, 0);
     
     lua_setglobal(state, "getTagsFromInfoTable");
 }

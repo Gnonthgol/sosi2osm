@@ -3,6 +3,8 @@
 
 #include "sosi2osm.h"
 
+char* execname;
+
 void usage() {
     printf("Usage: sosi2osm [sosi file] [lua file]\n");
 }
@@ -62,6 +64,7 @@ int main(int argc, char** args) {
         return 1;
     }
     
+    execname = args[0];
     char* input_filename = args[1];
     
     loadLua(args[2]);
