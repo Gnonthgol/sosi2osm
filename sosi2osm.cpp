@@ -23,7 +23,7 @@ void outputWay() {
     long int* nd;
     long int size = createNodes(&nd);
     
-    printf("<way id=\"%ld\" visible=\"true\">", -getSOSIId());
+    printf("<way id=\"%ld\" version=\"1\" visible=\"true\">", -getSOSIId());
     outputTags();
     
     for (int i = 0; i < size; i++) {
@@ -36,7 +36,7 @@ void outputWay() {
 }
 
 void outputRelation() {
-    printf("<relation id=\"%d\" visible=\"true\">", -getSOSIId());
+    printf("<relation id=\"%ld\" version=\"1\" visible=\"true\">", -getSOSIId());
     outputTags();
     
     char* role = "outer";

@@ -33,7 +33,7 @@ void getCoords(long int* size, double** lat, double** lon) {
 long nodeId = -1;
 long createNode(double lat, double lon, short kp) {
 	if (kp == 0) {
-    	printf("<node id=\"%ld\" lat=\"%.7f\" lon=\"%.7f\" visible=\"true\"/>\n", nodeId, lat, lon);
+    	printf("<node id=\"%ld\" lat=\"%.7f\" lon=\"%.7f\" version=\"1\" visible=\"true\"/>\n", nodeId, lat, lon);
 	    return nodeId--;
     }
     
@@ -63,7 +63,7 @@ long createNode(double lat, double lon, short kp) {
     kpM[lenM] = kp;
     idM[lenM] = nodeId;
     lenM++;
-    printf("<node id=\"%ld\" lat=\"%.7f\" lon=\"%.7f\" visible=\"true\"/>\n", nodeId, lat, lon);
+    printf("<node id=\"%ld\" lat=\"%.7f\" lon=\"%.7f\" version=\"1\" visible=\"true\"/>\n", nodeId, lat, lon);
     return nodeId--;
 }
 
@@ -89,7 +89,7 @@ void outputNode() {
     getCoords(&size, &lat, &lon);
     
     for (int i = 0; i < size; i++) {
-        printf("<node id=\"%ld\" lat=\"%.7f\" lon=\"%.7f\" visible=\"true\">\n", nodeId--, lat[i], lon[i]);
+        printf("<node id=\"%ld\" lat=\"%.7f\" lon=\"%.7f\" version=\"1\" visible=\"true\">\n", nodeId--, lat[i], lon[i]);
         outputTags();
         printf("</node>\n");
     }
