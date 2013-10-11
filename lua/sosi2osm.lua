@@ -28,3 +28,25 @@ function tokens(state, i)
     end
     return i, indent, tokens
 end
+
+-- Lower with q&d support for norwegian letters
+function norwegian_lower(text)
+	text = string.lower(text)
+	text = string.gsub(text, "Æ", "æ")
+	text = string.gsub(text, "Ø", "ø")
+	text = string.gsub(text, "Å", "å")
+	return text
+end
+
+function initcase(text)
+	text = string.gsub(text, "(([^%s-][\128-\191]*)([^%s-]*))", function (word,initial,rest)
+		if word == "I" or word == "PÅ" then
+			return norwegian_lower(word)
+		else
+			return initial .. norwegian_lower(rest)
+		end
+	end)
+
+	return text
+end
+
