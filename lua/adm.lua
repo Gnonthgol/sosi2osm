@@ -24,14 +24,14 @@ for i, indent, tokens in tokens, info, 0 do
     		out["border_type"] = "baseline"
     	end
     elseif tokens[1] == "FLATE" then
-    	out["type"] = "administrative"
+    	out["type"] = "boundary"
     elseif tokens[1] == "GRENSETYPESJØ" and tokens[2] == "6" then
     	out["boundary"] = "administrative"
     	out["admin_level"] = "2"
     elseif tokens[1] == "KOMM" or tokens[1] == "FYLKESNR" then
     	out["ref"] = tokens[2]
     elseif tokens[1] == "NAVN" then
-    	name = tokens[2]
+    	name = table.concat(tokens, " ", 2)
     elseif tokens[1] == "SPRÅK" then
     	lang = tokens[2]
     	if lang == "nor" then lang = "no" end
