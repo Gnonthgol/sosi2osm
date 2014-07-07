@@ -2,7 +2,7 @@ Source: sosi2osm
 Section: utils
 Priority: optional
 Maintainer: Ruben Undheim <ruben.undheim@gmail.com>
-Build-Depends: debhelper (>= 8.0.0), liblua5.1-0-dev, libfyba-dev
+Build-Depends: debhelper (>= 8.0.0), liblua5.1-0-dev, libfyba-dev, pkg-config
 Standards-Version: 3.9.5
 Homepage: https://github.com/Gnonthgol/sosi2osm
 Vcs-Git: https://github.com/Gnonthgol/sosi2osm.git
