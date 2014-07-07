@@ -1,0 +1,11 @@
+--- sosi2osm-20140707git634fc65.orig/tag.cpp
++++ sosi2osm-20140707git634fc65/tag.cpp
+@@ -37,7 +37,7 @@ void loadLua(char* filename) {
+     luaL_openlibs(state);
+     
+     char library_filename[256];
+-    snprintf(library_filename, 256, "%s/lua/sosi2osm.lua", dirname(execname));
++    snprintf(library_filename, 256, "/usr/share/sosi2osm/lua/sosi2osm.lua");
+     
+     int r = luaL_loadfile(state, library_filename);
+     if (r) {
