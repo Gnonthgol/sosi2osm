@@ -9,13 +9,27 @@
      
      int r = luaL_loadfile(state, library_filename);
      if (r) {
-@@ -48,8 +48,11 @@ void loadLua(char* filename) {
+@@ -46,10 +46,23 @@ void loadLua(char* filename) {
+     }
+     lua_call(state, 0, 0);
      
-     r = luaL_loadfile(state, filename);
-     if (r) {
+-    r = luaL_loadfile(state, filename);
+-    if (r) {
 -        fprintf(stderr, "Failed to load lua file %s\n", filename);
 -        exit(1);
++    FILE *file;
++    if((file = fopen(filename, "r")))
++    {
++        fclose(file);
++        r = luaL_loadfile(state, filename);
++        if(r) {
++            fprintf(stderr, "Failed to load lua file %s\n", filename);
++            exit(1);
++        }
++    }
++    else {
 +        snprintf(library_filename, 256, "/usr/share/sosi2osm/lua/%s",filename);
++        r = luaL_loadfile(state, library_filename);
 +        if(r) {
 +            fprintf(stderr, "Failed to load lua file %s\n", filename);
 +            exit(1);
