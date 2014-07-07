@@ -9,7 +9,7 @@ Vcs-Git: https://github.com/Gnonthgol/sosi2osm.git
 
 Package: sosi2osm
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, liblua5.1-0-dev, libfyba-dev
 Description: SOSI to OSM converter
  This little utility converts .sosi files into .osm files which are 
  used by OpenStreetMap.
