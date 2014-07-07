@@ -1,0 +1,15 @@
+Source: sosi2osm
+Section: utils
+Priority: optional
+Maintainer: Ruben Undheim <ruben.undheim@gmail.com>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.5
+Homepage: https://github.com/Gnonthgol/sosi2osm
+Vcs-Git: https://github.com/Gnonthgol/sosi2osm.git
+
+Package: sosi2osm
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: SOSI to OSM converter
+ This little utility converts .sosi files into .osm files which are 
+ used by OpenStreetMap.
