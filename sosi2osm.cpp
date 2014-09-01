@@ -6,7 +6,7 @@
 char* execname;
 
 void usage() {
-    printf("Usage: sosi2osm [sosi file] [lua file]\n");
+    fprintf(stderr,"Usage: sosi2osm [sosi file] [lua file]\n");
 }
 
 void handleHead() {
