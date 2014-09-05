@@ -1,4 +1,4 @@
-sosi2osm (20140707git634fc65-1~trusty) unstable; urgency=low
+sosi2osm (0.0.01-1) unstable; urgency=low
 
   * Initial release (Closes: #760597)
 

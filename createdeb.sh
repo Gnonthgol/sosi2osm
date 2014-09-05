@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PACKAGENAME=sosi2osm
-VERSION=20140707git634fc65
+VERSION=0.0.01
 rm -rf createdeb/
 mkdir createdeb
 #rm -rf createdeb/$PACKAGENAME-$VERSION
