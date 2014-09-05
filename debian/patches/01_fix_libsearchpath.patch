@@ -1,0 +1,13 @@
+Index: sosi2osm/Makefile
+===================================================================
+--- sosi2osm.orig/Makefile
++++ sosi2osm/Makefile
+@@ -1,7 +1,7 @@
+ PROGNAME=sosi2osm
+ OBJFILES=sosi2osm.o sosi.o tag.o node.o
+ 
+-CPPFLAGS = -I/usr/local/include/fyba -I/usr/include/fyba/ `pkg-config --cflags lua5.1-c++` -DLINUX -DUNIX -g
++CPPFLAGS = -I/usr/include/fyba `pkg-config --cflags lua5.1-c++` -DLINUX -DUNIX -g
+ LDFLAGS = -lfyba -lfygm -lfyut -lproj `pkg-config --libs lua5.1-c++`
+ 
+ all: $(PROGNAME)
