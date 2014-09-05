@@ -2,7 +2,8 @@ Source: sosi2osm
 Section: utils
 Priority: optional
 Maintainer: Ruben Undheim <ruben.undheim@gmail.com>
-Build-Depends: debhelper (>= 9.0.0), liblua5.1-0-dev, libfyba-dev, pkg-config, libproj-dev
+Build-Depends: debhelper (>= 9.0.0), liblua5.1-0-dev, libfyba-dev, pkg-config,
+               libproj-dev
 Standards-Version: 3.9.5
 Vcs-Git: git://github.com/rubund/sosi2osm.git -b debian
 Vcs-Browser: https://github.com/rubund/sosi2osm/tree/debian
