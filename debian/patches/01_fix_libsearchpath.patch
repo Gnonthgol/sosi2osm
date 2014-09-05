@@ -1,3 +1,7 @@
+Description: This patch makes sure that the dependencies are found and
+  that CPPFLAGS and LDFLAGS set by dh are applied during the build.
+Forwarded: will do
+Author: Ruben Undheim <ruben.undheim@gmail.com>
 Index: sosi2osm/Makefile
 ===================================================================
 --- sosi2osm.orig/Makefile
@@ -7,7 +11,7 @@ Index: sosi2osm/Makefile
  OBJFILES=sosi2osm.o sosi.o tag.o node.o
  
 -CPPFLAGS = -I/usr/local/include/fyba -I/usr/include/fyba/ `pkg-config --cflags lua5.1-c++` -DLINUX -DUNIX -g
-+CPPFLAGS = `pkg-config --cflags lua5.1-c++ fyba` -DLINUX -DUNIX -g
++CPPFLAGS := $(CPPFLAGS) `pkg-config --cflags lua5.1-c++ fyba` -DLINUX -DUNIX -g
 -LDFLAGS = -lfyba -lfygm -lfyut -lproj `pkg-config --libs lua5.1-c++`
 +LDFLAGS := $(LDFLAGS) -lproj `pkg-config --libs lua5.1-c++ fyba`
  

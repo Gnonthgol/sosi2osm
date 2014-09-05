@@ -1,5 +1,5 @@
-sosi2osm (20140707git634fc65-1~trusty) trusty; urgency=low
+sosi2osm (20140707git634fc65-1~trusty) unstable; urgency=low
 
   * Initial release
 
- -- Ruben Undheim <ruben.undheim@gmail.com>  Mon, 07 Jul 2014 15:18:09 +0200
+ -- Ruben Undheim <ruben.undheim@gmail.com>  Fri, 05 Sep 2014 19:38:09 +0200

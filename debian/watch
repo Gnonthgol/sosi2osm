@@ -1,0 +1,2 @@
+version=3
+https://github.com/Gnonthgol/sosi2osm/releases /Gnonthgol/sosi2osm/archive/(\d\S+)\.tar\.(?:bz2|gz|xz)
