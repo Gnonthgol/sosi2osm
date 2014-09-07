@@ -13,6 +13,7 @@ Package: sosi2osm
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: SOSI to OSM converter
- This little utility converts .sosi files into .osm files which are 
- used by OpenStreetMap. It relies on the FYBA library released by the
- Norwegian Mapping Authority (Statens kartverk).
+ This little utility converts .sos files into .osm files. A .sos file is a
+ geospatial vector data format used for exchange of geopgrahical information
+ in Norway. Osm-files are used by OpenStreetMap. The utility relies on the
+ FYBA library released by the Norwegian Mapping Authority (Statens kartverk).
