@@ -41,16 +41,16 @@ void outputRelation() {
     printf("<relation id=\"%ld\" version=\"1\" visible=\"true\">", -getSOSIId());
     outputTags();
     
-    char* role = "outer";
+    bool outer = true;
     long refsLen = getSOSIRefsSize();
     long* refs = getSOSIRefs();
     for (int i = 0; i < refsLen; i++) {
         if (refs[i] == START_OY)
-            role = "inner";
+            outer = false;
         else if (refs[i] == SLUTT_OY)
-            role = "outer";
+            outer = true;
         else
-            printf("<member ref=\"%d\" role=\"%s\" type=\"way\"/>", -abs(refs[i]), role);
+            printf("<member ref=\"%d\" role=\"%s\" type=\"way\"/>", -abs(refs[i]), outer?"outer":"inner");
     }
     
     free(refs);
