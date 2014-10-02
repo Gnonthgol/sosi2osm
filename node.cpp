@@ -83,15 +83,15 @@ long int createNodes(long int** ids) {
     return size;
 }
 
-void outputNode() {
+void outputNode(FILE* output) {
     long int size;
     double *lat, *lon;
     getCoords(&size, &lat, &lon);
     
     for (int i = 0; i < size; i++) {
-        printf("<node id=\"%ld\" lat=\"%.7f\" lon=\"%.7f\" version=\"1\" visible=\"true\">\n", nodeId--, lat[i], lon[i]);
-        outputTags();
-        printf("</node>\n");
+        fprintf(output, "<node id=\"%ld\" lat=\"%.7f\" lon=\"%.7f\" version=\"1\" visible=\"true\">\n", nodeId--, lat[i], lon[i]);
+        outputTags(output);
+        fprintf(output, "</node>\n");
     }
     
     free(lat);

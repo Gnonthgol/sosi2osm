@@ -117,7 +117,7 @@ void loadLua(char* filename) {
     lua_setglobal(state, "getTagsFromInfoTable");
 }
 
-void outputTags() {
+void outputTags(FILE* output) {
     lua_getglobal(state, "getTagsFromInfoTable");
     lua_newtable(state);
     int size = 0;
@@ -144,7 +144,7 @@ void outputTags() {
         }
         const char* key = lua_tostring(state, -2);
         const char* value = lua_tostring(state, -1);
-        printf("<tag k=\"%s\" v=\"%s\"/>", key, value);
+        fprintf(output, "<tag k=\"%s\" v=\"%s\"/>", key, value);
         lua_pop(state, 1);
     }
     

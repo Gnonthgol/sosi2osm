@@ -6,7 +6,7 @@
 char* execname;
 
 void usage() {
-    fprintf(stderr,"Usage: sosi2osm [sosi file] [lua file]\n");
+    fprintf(stderr,"Usage: sosi2osm <sosi file> <lua file> [output file]\n");
 }
 
 void handleHead() {
@@ -21,25 +21,25 @@ void handleHead() {
     }
 }
 
-void outputWay() {
+void outputWay(FILE* output) {
     long int* nd;
     long int size = createNodes(&nd);
     
-    printf("<way id=\"%ld\" version=\"1\" visible=\"true\">", -getSOSIId());
-    outputTags();
+    fprintf(output, "<way id=\"%ld\" version=\"1\" visible=\"true\">", -getSOSIId());
+    outputTags(output);
     
     for (int i = 0; i < size; i++) {
-        printf("<nd ref=\"%ld\" />", nd[i]);
+        fprintf(output, "<nd ref=\"%ld\" />", nd[i]);
     }
     
-    printf("</way>\n");
+    fprintf(output, "</way>\n");
     
     free(nd);
 }
 
-void outputRelation() {
-    printf("<relation id=\"%ld\" version=\"1\" visible=\"true\">", -getSOSIId());
-    outputTags();
+void outputRelation(FILE* output) {
+    fprintf(output, "<relation id=\"%ld\" version=\"1\" visible=\"true\">", -getSOSIId());
+    outputTags(output);
     
     bool outer = true;
     long refsLen = getSOSIRefsSize();
@@ -50,22 +50,34 @@ void outputRelation() {
         else if (refs[i] == SLUTT_OY)
             outer = true;
         else
-            printf("<member ref=\"%d\" role=\"%s\" type=\"way\"/>", -abs(refs[i]), outer?"outer":"inner");
+            fprintf(output, "<member ref=\"%d\" role=\"%s\" type=\"way\"/>", -abs(refs[i]), outer?"outer":"inner");
     }
     
     free(refs);
     
-    printf("</relation>\n");
+    fprintf(output, "</relation>\n");
 }
 
 int main(int argc, char** args) {
-    if (argc != 3) {
+    if (argc < 3 || argc > 4) {
         usage();
         return 1;
     }
     
     execname = args[0];
     char* input_filename = args[1];
+    char* output_filename = "-";
+    if (argc > 3) output_filename = args[3];
+    
+    FILE* output;
+    if (strcmp(output_filename, "-") == 0)
+        output = stdout;
+    else
+        output = fopen(output_filename, "w");
+    if (output == NULL) {
+        fprintf(stderr, "Could not open file for output '%s'\n", output_filename);
+        return 1;
+    }
     
     loadLua(args[2]);
     
@@ -74,7 +86,7 @@ int main(int argc, char** args) {
         return 1;
     }
     
-    printf("<?xml version=\"1.0\"?>\n"
+    fprintf(output, "<?xml version=\"1.0\"?>\n"
         "<osm version=\"0.6\" upload=\"false\" generator=\"sosi2osm\">\n");
     
     while (nextSOSIObject()) {
@@ -84,24 +96,25 @@ int main(int argc, char** args) {
             handleHead();
             break;
         case L_FLATE:
-            outputRelation();
+            outputRelation(output);
             break;
         case L_PUNKT:
         case L_SYMBOL:
         case L_TEKST:
-            outputNode();
+            outputNode(output);
             break;
         case L_KURVE:
         case L_LINJE:
         case L_BUEP:
-            outputWay();
+            outputWay(output);
             break;
         }
     }
     
-    printf("</osm>\n");
+    fprintf(output, "</osm>\n");
     
     closeSOSI();
+    fclose(output);
     
     return 0;
 }
