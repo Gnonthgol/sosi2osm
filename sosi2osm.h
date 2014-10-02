@@ -25,6 +25,6 @@ void outputTags(FILE* output);
 // Node
 
 void setProjection(const char* proj);
-long int createNodes(long int** ids);
+long int createNodes(long int** ids, FILE* output);
 void outputNode(FILE* output);
 

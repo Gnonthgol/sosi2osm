@@ -31,9 +31,9 @@ void getCoords(long int* size, double** lat, double** lon) {
 }
 
 long nodeId = -1;
-long createNode(double lat, double lon, short kp) {
+long createNode(double lat, double lon, short kp, FILE* output) {
 	if (kp == 0) {
-    	printf("<node id=\"%ld\" lat=\"%.7f\" lon=\"%.7f\" version=\"1\" visible=\"true\"/>\n", nodeId, lat, lon);
+    	fprintf(output, "<node id=\"%ld\" lat=\"%.7f\" lon=\"%.7f\" version=\"1\" visible=\"true\"/>\n", nodeId, lat, lon);
 	    return nodeId--;
     }
     
@@ -63,11 +63,11 @@ long createNode(double lat, double lon, short kp) {
     kpM[lenM] = kp;
     idM[lenM] = nodeId;
     lenM++;
-    printf("<node id=\"%ld\" lat=\"%.7f\" lon=\"%.7f\" version=\"1\" visible=\"true\"/>\n", nodeId, lat, lon);
+    fprintf(output, "<node id=\"%ld\" lat=\"%.7f\" lon=\"%.7f\" version=\"1\" visible=\"true\"/>\n", nodeId, lat, lon);
     return nodeId--;
 }
 
-long int createNodes(long int** ids) {
+long int createNodes(long int** ids, FILE* output) {
 	long int size;
     double *lat, *lon;
     getCoords(&size, &lat, &lon);
@@ -75,7 +75,7 @@ long int createNodes(long int** ids) {
     *ids = nd;
     
     for (int i = 0; i < size; i++) {
-        nd[i] = createNode(lat[i], lon[i], LC_GetKp(i+1));
+        nd[i] = createNode(lat[i], lon[i], LC_GetKp(i+1), output);
     }
     
     free(lat);

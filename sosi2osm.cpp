@@ -23,7 +23,7 @@ void handleHead() {
 
 void outputWay(FILE* output) {
     long int* nd;
-    long int size = createNodes(&nd);
+    long int size = createNodes(&nd, output);
     
     fprintf(output, "<way id=\"%ld\" version=\"1\" visible=\"true\">", -getSOSIId());
     outputTags(output);
