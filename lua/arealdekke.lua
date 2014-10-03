@@ -10,6 +10,10 @@ for i, indent, tokens in tokens, info, 0 do
 			out["natural"]="water"
         elseif tokens[2] == "ElvBekk" then
 			out["waterway"]="river"
+        elseif tokens[2] == "SnøIsbre" then
+            out["natural"]="glacier"
+        elseif tokens[2] == "FerskvannTørrfall" then
+            out["natural"]="sand"
         elseif tokens[2] == "InnsjøElvSperre" then
             out["waterway"]="weir"
         elseif tokens[2] == "Skog" then
@@ -39,6 +43,8 @@ for i, indent, tokens in tokens, info, 0 do
         elseif tokens[2] == "Alpinbakke" then
             out["route"] = "piste"
             out["piste:type"] = "downhill"
+        elseif tokens[2] == "Rullebane" then
+            out["aeroway"] = "runway"
         elseif tokens[2] == "Arealbrukgrense" then
         
         elseif tokens[2] == "FiktivDelelinje" then
@@ -61,6 +67,7 @@ for i, indent, tokens in tokens, info, 0 do
             out["seamark:type"] = "rock"
         elseif tokens[2] == "Tregruppe" then
             out["natural"] = "tree"
+        elseif tokens[2] == "Dataavgrensning" then
             
         else
             out[tokens[1]] = tokens[2]
