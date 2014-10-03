@@ -66,14 +66,16 @@ for i, indent, tokens in tokens, info, 0 do
             out[tokens[1]] = tokens[2]
 		end
     elseif tokens[1] == "HØYDE" then
-        out["elev"]= tokens[2]
+        out["elev"] = tokens[2]
+    elseif tokens[1] == "VANNBR" then
+        out["width"] = tokens[2]
     elseif tokens[1] == "OPPDATERINGSDATO" then
         out["source:date"] = tokens[2]
     elseif tokens[1] == "DATAFANGSTDATO" then
         out["source:date"] = tokens[2]
     elseif tokens[1] == "KVALITET" then
     
-    elseif tokens[1] == "KURVE" or tokens[1] == "PUNKT" or tokens[1] == "VANNBR" or  tokens[1] == "VATNLNR" then
+    elseif tokens[1] == "KURVE" or tokens[1] == "PUNKT" or  tokens[1] == "VATNLNR" then
         
     elseif tokens[1] == "NAVN" then
         out["name"] = tokens[2]
@@ -82,6 +84,10 @@ for i, indent, tokens in tokens, info, 0 do
     elseif #tokens > 2 then
         out["lko"..tokens[1]] = table.concat(tokens, "; ", 2)
     end
+end
+
+if out["waterway"] == "river" and (out["width"] == "1" or out["width"] == "2") then
+    out["waterway"] = "stream"
 end
 
 return out

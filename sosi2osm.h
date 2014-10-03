@@ -20,11 +20,11 @@ long getSOSIRefsSize();
 extern char* execname;
 void setEncoding(char* encoding);
 void loadLua(char* filename);
-void outputTags();
+void outputTags(FILE* output);
 
 // Node
 
 void setProjection(const char* proj);
-long int createNodes(long int** ids);
-void outputNode();
+long int createNodes(long int** ids, FILE* output);
+void outputNode(FILE* output);
 

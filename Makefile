@@ -1,8 +1,8 @@
 PROGNAME=sosi2osm
 OBJFILES=sosi2osm.o sosi.o tag.o node.o
 
-CPPFLAGS = -I/usr/local/include/fyba -I/usr/include/fyba/ `pkg-config --cflags lua5.1-c++` -DLINUX -DUNIX -g
-LDFLAGS = -lfyba -lfygm -lfyut -lproj `pkg-config --libs lua5.1-c++`
+CPPFLAGS := $(CPPFLAGS) `pkg-config --cflags lua5.1-c++ fyba` -DLINUX -DUNIX -g
+LDFLAGS := $(LDFLAGS) -lproj `pkg-config --libs lua5.1-c++ fyba`
 
 all: $(PROGNAME)
 
