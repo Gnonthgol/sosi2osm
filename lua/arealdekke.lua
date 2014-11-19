@@ -21,7 +21,7 @@ for i, indent, tokens in tokens, info, 0 do
         elseif tokens[2] == "Dam" then
             out["waterway"]="dam"
         elseif tokens[2] == "DyrketMark" then
-            out["landuse"]="farm"
+            out["landuse"]="farmland"
         elseif tokens[2] == "ÅpentOmråde" then
             out["natural"]="grassland"
         elseif tokens[2] == "TettBebyggelse" then
@@ -73,7 +73,7 @@ for i, indent, tokens in tokens, info, 0 do
             out[tokens[1]] = tokens[2]
 		end
     elseif tokens[1] == "HØYDE" then
-        out["elev"] = tokens[2]
+        out["ele"] = tokens[2]
     elseif tokens[1] == "VANNBR" then
         out["width"] = tokens[2]
     elseif tokens[1] == "OPPDATERINGSDATO" then
