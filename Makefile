@@ -1,8 +1,17 @@
 PROGNAME=sosi2osm
 OBJFILES=sosi2osm.o sosi.o tag.o node.o
 
-CPPFLAGS := $(CPPFLAGS) `pkg-config --cflags lua5.1-c++ fyba` -DLINUX -DUNIX -g
-LDFLAGS := $(LDFLAGS) -lproj `pkg-config --libs lua5.1-c++ fyba`
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+# Mac settings
+	LUA = lua
+	LDFLAGS += -liconv 
+else
+	LUA = lua5.1-c++
+endif
+
+CPPFLAGS := $(CPPFLAGS) `pkg-config --cflags $(LUA) fyba` -DLINUX -DUNIX -g
+LDFLAGS := $(LDFLAGS) -lproj `pkg-config --libs $(LUA) fyba` -lfyut -lfygm
 
 all: $(PROGNAME)
 

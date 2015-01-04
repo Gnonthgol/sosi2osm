@@ -4,9 +4,11 @@
 #include <stdlib.h>
 #include <libgen.h>
 #include <iconv.h>
+extern "C" {
 #include <lua.h>
 #include <lualib.h>
 #include <lauxlib.h>
+}
 
 iconv_t charDescriptor;
 void setEncoding(char* encoding) {
