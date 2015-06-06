@@ -50,13 +50,13 @@ for i, indent, tokens in tokens, info, 0 do
         elseif tokens[2] == "FiktivDelelinje" then
         
         elseif tokens[2] == "Innsjøkant" then
-        
+	   out["natural"] = "lake"   	        
         elseif tokens[2] == "KantUtsnitt" then
 
         elseif tokens[2] == "InnsjøkantRegulert" then
-        
+           out["natural"] = "lake"   	
         elseif tokens[2] == "ElvBekkKant" then
-        
+           out["waterway"] = "riverbank"
         elseif tokens[2] == "HavElvSperre" then
             out["natural"] = "coastline"
         elseif tokens[2] == "Kystkontur" then
