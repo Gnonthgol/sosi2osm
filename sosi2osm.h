@@ -1,5 +1,8 @@
 #include <fyba.h>
 
+#undef min
+#undef max
+
 // SOSI
 
 int openSOSI(const char* input_filename);
