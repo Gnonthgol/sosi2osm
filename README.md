@@ -1,4 +1,4 @@
 sosi2osm
 ========
 
-A program that translates SOSI files to OSM files.
+A program that translates SOSI files into OSM files.
