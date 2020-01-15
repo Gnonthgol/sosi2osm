@@ -1,6 +1,7 @@
 #include "sosi2osm.h"
 
 #include <algorithm>
+#define ACCEPT_USE_OF_DEPRECATED_PROJ_API_H
 #include <proj_api.h>
 
 projPJ origProj, osmProj;
@@ -52,7 +53,7 @@ long createNode(double lat, double lon, short kp, FILE* output) {
     }
     
     if (lenM >= sizeM) {
-    	sizeM = std::max(1024, sizeM*2);
+    	sizeM = max(1024, sizeM*2);
     	latM = (double*)realloc(latM, sizeof(double) * sizeM);
     	lonM = (double*)realloc(lonM, sizeof(double) * sizeM);
     	kpM = (short*)realloc(kpM, sizeof(short) * sizeM);

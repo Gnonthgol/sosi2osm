@@ -27,7 +27,7 @@ char* toUTF8(char* in, char* outBuf, size_t outlen) {
     
     if (r == -1) {
         fprintf(stderr, "Unknown character '%c' (0x%hhx)\n", in[0], in[0]);
-        exit(1);
+        return NULL;
     }
     
     return outBuf;
