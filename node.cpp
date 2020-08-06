@@ -53,7 +53,7 @@ long createNode(double lat, double lon, short kp, FILE* output) {
     }
     
     if (lenM >= sizeM) {
-    	sizeM = max(1024, sizeM*2);
+    	sizeM = std::max(1024, sizeM*2);
     	latM = (double*)realloc(latM, sizeof(double) * sizeM);
     	lonM = (double*)realloc(lonM, sizeof(double) * sizeM);
     	kpM = (short*)realloc(kpM, sizeof(short) * sizeM);
