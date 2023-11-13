@@ -1,14 +1,11 @@
 #include "sosi2osm.h"
 
 #include <algorithm>
-#define ACCEPT_USE_OF_DEPRECATED_PROJ_API_H
-#include <proj_api.h>
+#include <proj.h>
 
-projPJ origProj, osmProj;
+PJ *P;
 void setProjection(const char* proj) {
-    if (!(origProj = pj_init_plus(proj)) )
-        exit(1);
-    if (!(osmProj = pj_init_plus("+proj=latlong +datum=WGS84")) )
+    if (!(P = proj_create_crs_to_crs(PJ_DEFAULT_CTX, proj, "+proj=latlong +datum=WGS84", NULL))) 
         exit(1);
 }
 
@@ -23,12 +20,16 @@ void getCoords(long int* size, double** lat, double** lon) {
     for (i = 0; i < *size; i++) {
         getSOSICoord(i, x+i, y+i);
     }
-    
-    pj_transform(origProj, osmProj, *size, 1, x, y, NULL );
-    
+
+    PJ_COORD p, p_out;
+    p.lpzt.z = 0.0;
+    p.lpzt.t = 1.7976931348623158e+308;
     for (i = 0; i < *size; i++) {
-        x[i] = x[i]*RAD_TO_DEG;
-        y[i] = y[i]*RAD_TO_DEG;
+        p.lpzt.lam = x[i];
+        p.lpzt.phi = y[i];
+        p_out = proj_trans(P, PJ_FWD, p);
+        x[i] = p_out.xy.x;
+        y[i] = p_out.xy.y;
     }
 }
 
